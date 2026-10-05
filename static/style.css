@@ -1,0 +1,41 @@
+body { font-family: system-ui, "PingFang SC", "Microsoft YaHei", sans-serif;
+       margin: 0 auto; max-width: 1400px; padding: 12px 20px; color: #1c1e21; }
+header h1 { margin: 8px 0 4px; font-size: 22px; }
+.conv { margin: 0 0 10px; color: #444; font-size: 13px; }
+code { background: #f0f2f5; padding: 1px 5px; border-radius: 4px; }
+
+#params { border: 1px solid #ddd; border-radius: 8px; padding: 10px 14px; margin-bottom: 12px; }
+#params summary { cursor: pointer; font-weight: 600; }
+.cam-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px 16px; margin-top: 8px; }
+.cam-grid label { display: flex; flex-direction: column; font-size: 12px; color: #555; }
+.cam-grid textarea { font-family: ui-monospace, monospace; font-size: 11px; resize: vertical; }
+.run-bar { display: flex; align-items: center; gap: 16px; margin-top: 10px; flex-wrap: wrap; }
+.run-bar input { width: 70px; }
+button { padding: 5px 14px; border: 1px solid #bbb; border-radius: 6px;
+         background: #fff; cursor: pointer; }
+button:hover { background: #f0f2f5; }
+#btnTriangulate { background: #1a6fd4; color: #fff; border-color: #1a6fd4; }
+#btnTriangulate:hover { background: #155cb2; }
+#statusLine { color: #a33; font-size: 13px; }
+
+#views { display: flex; gap: 16px; }
+figure { margin: 0; }
+figcaption { font-size: 13px; margin-bottom: 4px; display: flex; gap: 10px; align-items: center; }
+figcaption .reset, .file { font-size: 12px; padding: 2px 8px; }
+.file { border: 1px solid #bbb; border-radius: 6px; cursor: pointer; }
+.file:hover { background: #f0f2f5; }
+canvas { border: 1px solid #ccc; border-radius: 4px; background: #fafafa;
+         display: block; touch-action: none; }
+.hint { font-size: 12px; color: #777; }
+
+#output { margin-top: 14px; }
+#output h2 { font-size: 17px; margin-bottom: 6px; }
+#resultNote { font-size: 13px; color: #666; font-weight: normal; }
+#resultTable { border-collapse: collapse; font-size: 12.5px; width: 100%; }
+#resultTable th, #resultTable td { border: 1px solid #ddd; padding: 4px 8px; text-align: left; }
+#resultTable th { background: #f5f6f8; }
+#resultTable tr.rejected td { color: #b00; }
+#resultTable pre { margin: 4px 0 0; font-size: 11px; }
+.cov-note { font-size: 12px; color: #8a6d00; background: #fff8e0;
+            border: 1px solid #ead27a; border-radius: 6px; padding: 6px 10px; }
+#scene3d { margin-top: 8px; }

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>双视角教学量测台</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header>
+  <h1>双视角教学量测台</h1>
+  <p class="conv">外参约定：<code>X_camera = R · X_world + t</code>；图片已去畸变；
+  所有量测均为<b>原图像素坐标</b>（点击/缩放/拖动经视图逆变换还原，绝不使用 CSS 坐标）。</p>
+</header>
+
+<section id="params">
+  <details open>
+    <summary>相机参数（JSON，可编辑；修改后旧结果作废）</summary>
+    <div class="cam-grid">
+      <label>K1<textarea id="K1" rows="3"></textarea></label>
+      <label>R1<textarea id="R1" rows="3"></textarea></label>
+      <label>t1<textarea id="t1" rows="3"></textarea></label>
+      <label>K2<textarea id="K2" rows="3"></textarea></label>
+      <label>R2<textarea id="R2" rows="3"></textarea></label>
+      <label>t2<textarea id="t2" rows="3"></textarea></label>
+    </div>
+  </details>
+  <div class="run-bar">
+    <label>像素误差上限 (px) <input id="maxPxErr" type="number" value="2.0" step="0.1" min="0.01"></label>
+    <label>噪声 σ (px) <input id="sigma" type="number" value="1.0" step="0.1" min="0.01"></label>
+    <button id="btnTriangulate">三角化</button>
+    <button id="btnClear">清空全部点</button>
+    <span id="statusLine"></span>
+  </div>
+</section>
+
+<section id="views">
+  <figure>
+    <figcaption>视图 1（<span id="count1">0</span> 点）
+      <button class="reset" data-view="0">复位视图</button>
+      <label class="file">换图<input type="file" id="file1" accept="image/*" hidden></label>
+    </figcaption>
+    <canvas id="canvas1" width="640" height="480"></canvas>
+  </figure>
+  <figure>
+    <figcaption>视图 2（<span id="count2">0</span> 点）
+      <button class="reset" data-view="1">复位视图</button>
+      <label class="file">换图<input type="file" id="file2" accept="image/*" hidden></label>
+    </figcaption>
+    <canvas id="canvas2" width="640" height="480"></canvas>
+  </figure>
+</section>
+<p class="hint">操作：左键单击＝加点（按加入顺序配对，每视图最多 20 点）；右键＝删除最近点；
+滚轮＝以光标为中心缩放；按住拖动＝平移。任何编辑都会撤销旧三角化结果。</p>
+
+<section id="output">
+  <h2>三角化结果 <span id="resultNote"></span></h2>
+  <div id="resultWrap">
+    <table id="resultTable">
+      <thead>
+        <tr><th>#</th><th>状态</th><th>空间点 X (世界系)</th><th>误差1 (px)</th><th>误差2 (px)</th>
+        <th>射线夹角 (°)</th><th>局部协方差 σ²(JᵀJ)⁻¹</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <p class="cov-note">协方差为当前解处按“各像素坐标独立同方差 σ 噪声”假设的
+    <b>局部</b>线性化估计 σ²(JᵀJ)⁻¹，<b>不构成全局可信保证</b>。</p>
+    <canvas id="scene3d" width="640" height="420"></canvas>
+    <p class="hint">三维示意：拖动旋转、滚轮缩放。橙/绿方块为相机 1/2 中心，青点为三角化空间点。</p>
+  </div>
+</section>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
