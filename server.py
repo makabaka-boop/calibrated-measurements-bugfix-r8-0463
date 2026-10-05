@@ -1,4 +1,4 @@
-"""双视角教学量测台后端：静态页面 + /api/triangulate。
+"""双视角教学量测台后端：静态页面 + /api/triangulate + /api/measurements。
 
 无状态服务：不做任何持久化，不做自标定（K/R/t 只校验、不修改）。
 """
@@ -51,9 +51,13 @@ def api_measurements():
     from measurements import measure_request
 
     try:
-        return jsonify(measure_request(request.get_json(force=True)))
-    except (ValueError, KeyError, TypeError, tri.TriangulationRejected) as exc:
+        payload = measure_request(request.get_json(force=True, silent=True))
+    except tri.TriangulationRejected as e:
+        return jsonify(ok=False, code=e.code, error=e.message), 400
+    except (ValueError, KeyError, TypeError) as exc:
         return jsonify(ok=False, error=str(exc)), 400
+    # 量测失败时 payload 仍携带同一次三角化证据（ok=False，HTTP 400）
+    return jsonify(payload), (200 if payload.get("ok") else 400)
 
 
 @app.get("/measurements")

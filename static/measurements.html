@@ -1,4 +1,15 @@
-<!doctype html><meta charset="utf-8"><title>标定距离量测</title>
-<h1>共用参考段的距离量测</h1><p>粘贴原始相机、对应点与 reference、known_length、segments。端点编号始终为原始输入编号。</p>
-<textarea id="input" rows="18" cols="90"></textarea><button id="run">量测并导出</button><pre id="out"></pre>
+<!doctype html>
+<meta charset="utf-8">
+<title>标定距离量测</title>
+<h1>共用参考段的距离量测</h1>
+<p>
+  粘贴原始相机、对应点与 reference、known_length、segments。端点编号始终为原始输入编号；
+  量测、页面证据与下载均来自同一次重建。已知参考长度按精确值处理，参考段测自己返回该长度及零方差。
+</p>
+<textarea id="input" rows="18" cols="90"></textarea>
+<button id="run">量测并导出</button>
+<div id="status"></div>
+<div id="evidence"></div>
+<pre id="out"></pre>
+<a id="download" hidden>下载本次证据</a>
 <script src="/static/measurements.js"></script>
