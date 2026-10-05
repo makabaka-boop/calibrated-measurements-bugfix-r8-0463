@@ -48,12 +48,32 @@ def api_triangulate():
 
 @app.post("/api/measurements")
 def api_measurements():
-    from measurements import measure_request
+    from measurements import MeasurementFailure, measure_request
 
+    payload = request.get_json(force=True, silent=True)
+    if not isinstance(payload, dict):
+        return jsonify(ok=False, code="INVALID_REQUEST", error="请求体必须是 JSON 对象"), 400
     try:
-        return jsonify(measure_request(request.get_json(force=True)))
-    except (ValueError, KeyError, TypeError, tri.TriangulationRejected) as exc:
-        return jsonify(ok=False, error=str(exc)), 400
+        return jsonify(measure_request(payload))
+    except MeasurementFailure as exc:
+        # 整次量测失败：稳定 code + 说明 + 同次三角化证据（保留原始拒绝原因）
+        return (
+            jsonify(
+                ok=False,
+                code=exc.code,
+                error=exc.message,
+                results=exc.results,
+            ),
+            400,
+        )
+    except tri.TriangulationRejected as exc:
+        return jsonify(ok=False, code=exc.code, error=exc.message), 400
+    except KeyError as exc:
+        return jsonify(
+            ok=False, code="INVALID_REQUEST", error=f"缺少字段：{exc.args[0]}"
+        ), 400
+    except (ValueError, TypeError) as exc:
+        return jsonify(ok=False, code="INVALID_REQUEST", error=str(exc)), 400
 
 
 @app.get("/measurements")

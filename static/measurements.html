@@ -1,4 +1,53 @@
-<!doctype html><meta charset="utf-8"><title>标定距离量测</title>
-<h1>共用参考段的距离量测</h1><p>粘贴原始相机、对应点与 reference、known_length、segments。端点编号始终为原始输入编号。</p>
-<textarea id="input" rows="18" cols="90"></textarea><button id="run">量测并导出</button><pre id="out"></pre>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>标定距离量测</title>
+<link rel="stylesheet" href="/static/style.css">
+<style>
+  #input { font-family: ui-monospace, monospace; font-size: 12px; width: 100%;
+           box-sizing: border-box; }
+  .m-bar { margin: 8px 0; display: flex; gap: 14px; align-items: center; }
+  #mStatus { font-size: 13px; }
+  #mStatus.ok { color: #0a6b2c; }
+  #mStatus.bad { color: #b00; }
+  .m-tables { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 10px; }
+  .m-tables table { border-collapse: collapse; font-size: 12.5px; }
+  .m-tables th, .m-tables td { border: 1px solid #ddd; padding: 4px 8px; text-align: left; }
+  .m-tables th { background: #f5f6f8; }
+  tr.rejected td { color: #b00; }
+  #mRaw { max-height: 320px; overflow: auto; font-size: 11px;
+          background: #f7f8fa; border: 1px solid #e2e4e8; border-radius: 6px;
+          padding: 8px; }
+  #mDownload { display: none; }
+  .m-note { font-size: 12px; color: #555; }
+</style>
+</head>
+<body>
+<header>
+  <h1>共用参考段的距离量测</h1>
+  <p class="conv">端点编号始终为<b>原始对应点编号</b>；已知参考长度按<b>精确值</b>处理。
+  量测、页面证据与下载来自<b>同一次三角化</b>；引用被拒绝的点、零长度段或
+  无法表示的数值时整次量测失败，并保留原始拒绝原因。</p>
+</header>
+
+<section id="params">
+  <label class="m-note" for="input">完整请求 JSON（K1/R1/t1/K2/R2/t2、pairs、max_px_err、sigma、
+    reference=[原始编号,原始编号]、known_length、segments=1～8 对原始编号）</label>
+  <textarea id="input" rows="18"></textarea>
+  <div class="m-bar">
+    <button id="run">量测并导出</button>
+    <a id="mDownload" href="#" download="measurement-evidence.json">
+      <button type="button">下载本次证据（请求+同次结果）</button>
+    </a>
+    <span id="mStatus"></span>
+  </div>
+</section>
+
+<section id="mEvidence" class="m-tables"></section>
+<h2 style="font-size:15px; margin-top:16px;">原始返回 JSON</h2>
+<pre id="mRaw"></pre>
+
 <script src="/static/measurements.js"></script>
+</body>
+</html>
